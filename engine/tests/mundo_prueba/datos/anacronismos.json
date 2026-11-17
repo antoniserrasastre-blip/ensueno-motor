@@ -1,0 +1,3 @@
+{"_": "Lo que no existe (bloquea) y lo que es de fuera (avisa).",
+ "bloquea": [{"que": "pólvora", "palabras": ["pólvora", "cañón", "arcabuz"]}],
+ "avisa": [{"que": "moneda", "palabras": ["moneda", "denario"], "de": "la ciudad"}]}

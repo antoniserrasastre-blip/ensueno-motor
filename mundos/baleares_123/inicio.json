@@ -1,0 +1,67 @@
+{
+ "lugares": {
+  "ses_paisses": {
+   "nombre": "Ses Païsses",
+   "tipo": "poblado",
+   "estado": "visto",
+   "lat": 39.6964,
+   "lon": 3.3462,
+   "nota": "poblado amurallado junto a Artà, con su talayot central"
+  },
+  "capocorb_vell": {
+   "nombre": "Capocorb Vell",
+   "tipo": "poblado",
+   "estado": "oido",
+   "lat": 39.3825,
+   "lon": 2.7816,
+   "nota": "poblado de cinco talayots en el sur, cerca de los acantilados"
+  },
+  "son_fornes": {
+   "nombre": "Son Fornés",
+   "tipo": "poblado",
+   "estado": "oido",
+   "lat": 39.5745,
+   "lon": 2.9985,
+   "nota": "poblado del interior, en el llano"
+  },
+  "son_corro": {
+   "nombre": "Son Corró",
+   "tipo": "santuario",
+   "estado": "oido",
+   "lat": 39.6386,
+   "lon": 2.9472,
+   "nota": "santuario de las cabezas de toro de bronce (Costitx)"
+  },
+  "badia_palma": {
+   "nombre": "La bahía grande",
+   "tipo": "cala",
+   "estado": "oido",
+   "lat": 39.555,
+   "lon": 2.63,
+   "nota": "donde Roma fundará Palma si vence"
+  },
+  "badia_alcudia": {
+   "nombre": "La bahía del norte",
+   "tipo": "cala",
+   "estado": "oido",
+   "lat": 39.845,
+   "lon": 3.125,
+   "nota": "donde Roma fundará Pollentia si vence"
+  },
+  "ebusus": {
+   "nombre": "Ebusus",
+   "tipo": "ciudad",
+   "estado": "oido",
+   "lat": 38.9067,
+   "lon": 1.4363,
+   "nota": "ciudad púnica de Ibiza, aliada de Roma: mercaderes, vino, cerámica de torno"
+  }
+ },
+ "amenazas": {
+  "naves_roma": {
+   "que": "Las naves de Roma",
+   "dia": 120,
+   "nota": "el cónsul Metelo viene con sus legiones; dicen que forra las cubiertas con pieles contra las hondas"
+  }
+ }
+}

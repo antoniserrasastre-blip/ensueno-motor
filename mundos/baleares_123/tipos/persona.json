@@ -1,0 +1,4 @@
+{"coleccion": "personas", "obligatorios": ["nombre", "donde"],
+ "defecto": {"conocido": "visto", "relacion": 0},
+ "refs": {"donde": "lugar", "poblado": "lugar"}, "id": "nombre",
+ "_": "poblado: de dónde es. rol: una línea (hondera, pastor, viejo de las genealogías, mercader de Ebusus…)."}

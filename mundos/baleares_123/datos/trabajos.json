@@ -1,0 +1,16 @@
+{"_": "La tabla de trabajos del poblado (como en RimWorld): cada persona de los tuyos, una prioridad de 1 (lo primero) a 4 en cada trabajo; sin número, no lo hace. Los sistemas de la fase 6 leen esto para producir.",
+ "trabajos": [
+  {"id": "pastorear", "nombre": "Pastorear", "icono": "rabbit", "oficio": "pastor"},
+  {"id": "labrar", "nombre": "Labrar y segar", "icono": "wheat", "oficio": "labrador"},
+  {"id": "moler", "nombre": "Moler y cocer", "icono": "cookie", "oficio": null},
+  {"id": "pescar", "nombre": "Pescar", "icono": "fish", "oficio": "pescador"},
+  {"id": "sal", "nombre": "Sal", "icono": "waves", "oficio": "salinero"},
+  {"id": "honda", "nombre": "Honda", "icono": "target", "oficio": "hondero"},
+  {"id": "cazar", "nombre": "Cazar", "icono": "footprints", "oficio": "cazador"},
+  {"id": "tejer", "nombre": "Hilar y tejer", "icono": "scissors", "oficio": "tejedora"},
+  {"id": "barro", "nombre": "Alfarería", "icono": "amphora", "oficio": "alfarero"},
+  {"id": "piedra", "nombre": "Piedra seca", "icono": "brick-wall", "oficio": "cantero"},
+  {"id": "bronce", "nombre": "Bronce", "icono": "flame", "oficio": "broncista"},
+  {"id": "vigilar", "nombre": "Vigilar la costa", "icono": "eye", "oficio": null},
+  {"id": "curar", "nombre": "Curar", "icono": "heart-pulse", "oficio": "curandera"}
+ ]}

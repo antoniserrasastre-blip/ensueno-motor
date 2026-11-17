@@ -1,0 +1,9 @@
+{"_": "Trueque sin moneda (orden «trocar»): lo que vale cada cosa, medido en «ovejas» (una oveja = 10), y lo que cada mercado quiere (paga mejor, ×) y ofrece (cuánto tiene). margen: la parte del mercader. Ebusus es púnica: quiere lana, quesos, pieles y carne salada de las islas; da vino, aceite, cerámica de torno, cuentas de vidrio y metal.",
+ "valores": {"ovejas": 10, "cabras": 8, "cerdos": 12, "bueyes": 80, "lana": 2, "queso": 3, "leche": 0.5, "trigo": 1.5, "cebada": 1,
+             "pan": 1, "sal": 1.5, "pescado": 1, "pescado_salado": 2, "carne": 2, "carne_salada": 3, "piel": 5, "tela_de_lana": 12,
+             "vasija": 3, "vino": 8, "aceite": 10, "bronce": 15, "hierro": 20, "plomo": 6, "miel": 4, "cuentas": 2, "puñal_de_bronce": 30},
+ "mercados": {
+  "ebusus": {"margen": 0.15,
+             "quiere": {"lana": 1.3, "queso": 1.2, "piel": 1.3, "carne_salada": 1.2, "tela_de_lana": 1.1, "sal": 0.7},
+             "ofrece": {"vino": 40, "aceite": 30, "vasija": 40, "cuentas": 100, "bronce": 20, "hierro": 10, "plomo": 15}}
+ }}

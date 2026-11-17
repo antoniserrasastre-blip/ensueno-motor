@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partida</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Pixelify+Sans:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+/* El panel de una partida del motor nuevo. Una cosa a la vista; lo demás, plegado. */
+:root {
+  --tinta: #10142a; --tinta-2: #171c38; --tinta-3: #222852; --linea: rgba(233, 216, 166, 0.14);
+  --arena: #ede0bb; --arena-2: #b9ae92; --arena-3: #8a826d; --tiro: #c2387f; --brea: #f2b134; --bien: #7bc8a4; --mal: #e5584f;
+  --pixel: "Pixelify Sans", system-ui, sans-serif; --texto: "Atkinson Hyperlegible", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--tinta); color: var(--arena); font: 15px/1.5 var(--texto); }
+:focus-visible { outline: 2px solid var(--brea); outline-offset: 2px; border-radius: 6px; }
+.icon { width: 18px; height: 18px; vertical-align: -3px; }
+header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 16px; padding: 12px 22px;
+  background: var(--tinta-2); border-bottom: 1px solid var(--linea); }
+header a.volver { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--tinta-3); color: var(--arena); flex: none; }
+header .t { min-width: 0; }
+header h1 { font: 700 19px var(--pixel); margin: 0; color: var(--tiro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+header small { color: var(--arena-2); }
+header .reloj { margin-left: auto; text-align: right; white-space: nowrap; }
+header .reloj b { display: block; font: 700 15px var(--pixel); color: var(--brea); }
+main { max-width: 820px; margin: 0 auto; padding: 22px 22px 60px; display: grid; gap: 14px; }
+main > * { min-width: 0; }      /* la tabla de trabajos se desplaza dentro, no empuja la página */
+.foco { padding: 20px; border-radius: 16px; background: var(--tinta-2); border: 1px solid var(--brea); }
+.foco h2 { font: 700 20px var(--pixel); margin: 0 0 6px; color: var(--brea); }
+.foco p { margin: 6px 0; }
+.foco .orden { display: flex; gap: 8px; align-items: center; margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--tinta); font-size: 14px; }
+.foco .orden code { flex: 1; color: var(--arena); }
+button.b { border: 0; padding: 7px 12px; border-radius: 9px; background: var(--tinta-3); color: var(--arena); font: 700 13px var(--texto); cursor: pointer; }
+details.s { border-radius: 14px; background: var(--tinta-2); border: 1px solid var(--linea); }
+details.s > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 14px 18px; font: 700 15px var(--pixel); }
+details.s > summary::-webkit-details-marker { display: none; }
+details.s > summary small { margin-left: auto; font: 400 13px var(--texto); color: var(--arena-3); }
+details.s > div { padding: 0 18px 16px; }
+pre.const { white-space: pre-wrap; font: 13px/1.5 ui-monospace, monospace; color: var(--arena-2); margin: 0; }
+.fila { display: flex; gap: 10px; align-items: baseline; padding: 7px 0; border-top: 1px solid var(--linea); }
+.fila:first-child { border-top: 0; }
+.fila b { font-weight: 700; } .fila small { color: var(--arena-3); }
+.fila .v { margin-left: auto; color: var(--arena-2); font-size: 13px; white-space: nowrap; }
+.vacio { color: var(--arena-3); margin: 0; }
+.aviso { color: var(--arena-2); font-size: 13.5px; }
+.tabla { overflow-x: auto; margin: 0 -4px; padding-bottom: 4px; }
+.tabla table { border-collapse: separate; border-spacing: 3px; }
+.tabla th { font: 400 12px var(--texto); color: var(--arena-3); padding: 2px; }
+.tabla th .icon { width: 17px; height: 17px; color: var(--arena-2); }
+.tabla td.quien { position: sticky; left: 0; background: var(--tinta-2); padding-right: 10px; white-space: nowrap; font-weight: 700; }
+.tabla button.p { width: 34px; height: 34px; border: 1px solid var(--linea); border-radius: 8px; background: var(--tinta); color: var(--arena-3);
+  font: 700 15px var(--pixel); cursor: pointer; }
+.tabla button.p[data-v="1"] { background: var(--brea); color: var(--tinta); border-color: var(--brea); }
+.tabla button.p[data-v="2"] { background: rgba(242, 177, 52, .45); color: var(--arena); }
+.tabla button.p[data-v="3"] { background: rgba(242, 177, 52, .22); color: var(--arena); }
+.tabla button.p[data-v="4"] { background: rgba(242, 177, 52, .1); color: var(--arena-2); }
+.ayuda { color: var(--arena-3); font-size: 13px; margin: 8px 0 0; }
+.chip { font: 700 11.5px var(--texto); padding: 2px 8px; border-radius: 999px; background: var(--tinta-3); color: var(--arena-2); white-space: nowrap; }
+.chip.para_narrar { background: rgba(242, 177, 52, .18); color: var(--brea); }
+.chip.rechazada { background: rgba(229, 88, 79, .15); color: var(--mal); }
+select.ir { margin-top: 4px; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--linea); background: var(--tinta); color: var(--arena-2); font: 13px var(--texto); }
+.ficha { padding: 18px; border-radius: 16px; background: var(--tinta-2); border: 1px solid var(--linea); }
+.ficha header { all: unset; display: flex; align-items: center; gap: 10px; }
+.ficha h2 { font: 700 20px var(--pixel); margin: 0; }
+.ficha header small { color: var(--arena-3); }
+.ficha .cerrar { margin-left: auto; }
+.ficha .vida { display: flex; gap: 14px; align-items: center; margin: 12px 0; font-size: 14px; color: var(--arena-2); flex-wrap: wrap; }
+.ficha .barra { flex: 1; min-width: 120px; height: 8px; border-radius: 99px; background: var(--tinta); overflow: hidden; }
+.ficha .barra i { display: block; height: 100%; background: var(--bien); }
+.atr { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.atr div { text-align: center; padding: 8px 2px; border-radius: 10px; background: var(--tinta); }
+.atr small { display: block; font: 700 11px var(--pixel); color: var(--arena-3); letter-spacing: .05em; }
+.atr b { display: block; font: 700 20px var(--pixel); color: var(--brea); }
+.atr span { font-size: 12px; color: var(--arena-2); }
+.comps { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.comps .chip b { color: var(--brea); margin-left: 4px; }
+.aprende { margin-top: 12px; }
+.aprende p { margin: 0 0 6px; color: var(--brea); font-size: 13.5px; }
+.aprende button { margin: 0 6px 6px 0; }
+button.ver { all: unset; cursor: pointer; font-weight: 700; } button.ver:hover { color: var(--brea); }
+@media (max-width: 560px) { .atr { grid-template-columns: repeat(3, 1fr); } }
+.amenaza { font: 700 12px var(--texto); color: var(--mal); background: rgba(229, 88, 79, .12); padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.tq-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tq-cols h4 { margin: 4px 0; font: 700 13px var(--pixel); color: var(--arena-2); }
+.tq-fila { display: flex; align-items: center; gap: 6px; padding: 4px 0; font-size: 14px; }
+.tq-fila span.n { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tq-fila small { color: var(--arena-3); }
+.tq-fila button { width: 28px; height: 28px; border: 1px solid var(--linea); border-radius: 8px; background: var(--tinta); color: var(--arena); cursor: pointer; font: 700 15px var(--texto); }
+.tq-fila b { min-width: 26px; text-align: center; color: var(--brea); }
+.balanza { margin: 12px 0 8px; height: 10px; border-radius: 99px; background: var(--tinta); overflow: hidden; display: flex; }
+.balanza i { display: block; height: 100%; }
+.tq-pie { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+.tq-pie .si { background: var(--brea); color: var(--tinta); } .tq-pie .si:disabled { opacity: .4; cursor: default; }
+@media (max-width: 560px) { .tq-cols { grid-template-columns: 1fr; } }
+.forja-pide { display: flex; gap: 8px; margin-bottom: 8px; }
+.forja-pide input { flex: 1; min-width: 0; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--linea); background: var(--tinta); color: var(--arena); font: inherit; }
+.chip.pedido { color: var(--arena-2); } .chip.en_obra, .chip.probando { background: rgba(79, 179, 191, .15); color: #4fb3bf; }
+.chip.listo { background: rgba(123, 200, 164, .15); color: var(--bien); } .chip.fallo { background: rgba(229, 88, 79, .15); color: var(--mal); }
+.interruptor { position: relative; width: 40px; height: 22px; border-radius: 99px; border: 0; background: var(--tinta-3); cursor: pointer; flex: none; }
+.interruptor::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--arena-3); transition: left .15s; }
+.interruptor[aria-checked="true"] { background: var(--bien); } .interruptor[aria-checked="true"]::after { left: 21px; background: var(--tinta); }
+.mapa { position: relative; border-radius: 12px; overflow: hidden; background: #183452; }
+.mapa canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; cursor: pointer; }
+.capas { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.capas button[aria-pressed="true"] { background: var(--brea); color: var(--tinta); }
+.mapa-sel { margin: 8px 0 0; font-size: 14px; color: var(--arena-2); min-height: 1.4em; }
+.mesa-hilo { display: grid; gap: 10px; max-height: 460px; overflow-y: auto; padding: 4px 2px 8px; }
+.m { padding: 10px 14px; border-radius: 14px; font-size: 15px; line-height: 1.5; }
+.m.yo { justify-self: end; max-width: 85%; background: var(--tiro); color: #fff; border-bottom-right-radius: 4px; white-space: pre-wrap; }
+.m.yo.evento { background: rgba(194, 56, 127, .25); color: var(--arena); }
+.m.dir { justify-self: start; max-width: 95%; background: var(--tinta); border: 1px solid var(--linea); border-bottom-left-radius: 4px; }
+.m.dir p { margin: 0 0 8px; } .m.dir p:last-of-type { margin-bottom: 4px; }
+.m.dir blockquote { margin: 0 0 8px; padding-left: 10px; border-left: 3px solid var(--brea); color: var(--arena-2); }
+.m.dir ul, .m.dir ol { margin: 0 0 8px; padding-left: 20px; }
+.tabla-md { overflow-x: auto; margin: 0 0 8px; } .tabla-md table { border-collapse: collapse; font-size: 13.5px; }
+.tabla-md th, .tabla-md td { border: 1px solid var(--linea); padding: 4px 8px; text-align: left; vertical-align: top; }
+.m.sis { justify-self: center; font-size: 13px; color: var(--arena-2); background: var(--tinta-3); border-radius: 999px; padding: 4px 12px; }
+.oir { border: 0; background: none; color: var(--arena-3); font: 12.5px var(--texto); cursor: pointer; padding: 0; }
+.pensando { display: inline-flex; gap: 4px; align-items: center; color: var(--arena-3); font-size: 13.5px; }
+.pensando i { width: 7px; height: 7px; border-radius: 50%; background: var(--arena-3); animation: punto 1.2s infinite; }
+.pensando i:nth-child(2) { animation-delay: .2s; } .pensando i:nth-child(3) { animation-delay: .4s; }
+@keyframes punto { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+.mesa-pie { display: flex; gap: 8px; margin-top: 8px; }
+.mesa-pie textarea { flex: 1; min-width: 0; resize: vertical; min-height: 44px; max-height: 160px; padding: 10px 12px; border-radius: 12px;
+  border: 1px solid var(--linea); background: var(--tinta); color: var(--arena); font: 15px/1.4 var(--texto); }
+.grande { font: 700 16px var(--pixel); padding: 12px 22px; border-radius: 12px; border: 0; background: var(--brea); color: var(--tinta); cursor: pointer; }
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); padding: 10px 16px; border-radius: 12px; background: var(--tinta-3);
+  border: 1px solid var(--mal); color: var(--arena); z-index: 5; max-width: 90vw; }
+@media (max-width: 560px) { header .t { flex: 1; } .amenaza .largo { display: none; } header { padding: 10px 14px; gap: 10px; } header .reloj small { display: none; } main { padding: 14px 14px 40px; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="volver" id="volver" href="../../" title="Volver a las partidas" aria-label="Volver a las partidas"><i data-lucide="layout-grid" class="icon"></i></a>
+  <div class="t"><h1 id="nombre">…</h1><small id="mundo"></small></div>
+  <span id="amenaza"></span>
+  <div class="reloj"><b id="reloj"></b><small id="turno"></small></div>
+</header>
+<main id="main"><p class="vacio">Cargando…</p></main>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+// la base del servidor, sea «/» o un prefijo (como /partida/ detrás de un proxy): lo que hay antes de «p/<id>/»
+const [, BASE, pid] = location.pathname.match(/^(.*\/)p\/([a-z0-9_]+)\/?/) || [, "/", ""];
+document.getElementById("volver").href = BASE;
+let firma = "";
+const ESTADO_LUGAR = { oido: "de oídas", visto: "visto", conocido: "lo conoces" };
+
+const seccion = (icono, titulo, resumen, cuerpo, abierta = false) =>
+  `<details class="s" data-s="${esc(titulo)}" ${abierta ? "open" : ""}><summary><i data-lucide="${icono}" class="icon"></i>${esc(titulo)}<small>${esc(resumen)}</small></summary><div>${cuerpo}</div></details>`;
+
+// ---------------------------------------------------------------- la mesa (como la de EnSueño)
+const ESPERA = `<p class="pensando" role="status"><i></i><i></i><i></i> Esperando al director…</p>`;
+const esperaDirector = ms => { const u = [...(ms || [])].reverse().find(m => m.de === "toni" || m.de === "director"); return u?.de === "toni"; };
+// Markdown de la narración: párrafos, **negrita**, *cursiva*, citas (>), listas y tablas (|) — el mismo que EnSueño
+const enLinea = s => s.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/(^|[^*])\*([^*\n]+?)\*/g, "$1<i>$2</i>").replace(/`([^`]+)`/g, "<code>$1</code>");
+function filasTabla(bloque) {
+  const lineas = bloque.split("\n").map(l => l.trim()).filter(Boolean);
+  if (lineas.length > 1 && lineas.every(l => l.startsWith("|"))) return lineas.filter(l => !/^\|[\s:|-]+\|?$/.test(l)).map(l => l.replace(/^\||\|$/g, "").split("|").map(c => c.trim()));
+  return null;
+}
+function tablaHtml(filas) {
+  const cab = filas.length > 1 && filas[0].some(Boolean) && filas[0].every(c => !c || !/[.!?»]$/.test(c));
+  const fila = (f, celda) => `<tr>${f.map(c => `<${celda}>${enLinea(c)}</${celda}>`).join("")}</tr>`;
+  return `<div class="tabla-md"><table>${cab ? `<thead>${fila(filas[0], "th")}</thead>` : ""}<tbody>${(cab ? filas.slice(1) : filas).map(f => fila(f, "td")).join("")}</tbody></table></div>`;
+}
+const prosa = t => esc(t).split(/\n{2,}/).map(p => {
+  const tabla = /^\s*\|/.test(p) && filasTabla(p);
+  if (tabla?.length) return tablaHtml(tabla);
+  const lineas = p.split("\n");
+  if (lineas.every(l => /^&gt; ?/.test(l))) return `<blockquote>${enLinea(lineas.map(l => l.replace(/^&gt; ?/, "")).join("<br>"))}</blockquote>`;
+  if (lineas.every(l => /^[-*] /.test(l))) return `<ul>${lineas.map(l => `<li>${enLinea(l.slice(2))}</li>`).join("")}</ul>`;
+  if (lineas.every(l => /^\d+\. /.test(l))) return `<ol>${lineas.map(l => `<li>${enLinea(l.replace(/^\d+\. /, ""))}</li>`).join("")}</ol>`;
+  return `<p>${enLinea(p).replace(/\n/g, "<br>")}</p>`;
+}).join("");
+function htmlMensaje(m) {
+  if (m.de === "toni") return `<div class="m yo${m.evento ? " evento" : ""}">${esc(m.texto || m.evento)}</div>`;
+  if (m.de === "director") return `<div class="m dir">${prosa(m.texto)}<button class="oir" data-oir="${m.id}">${hablando === m.id ? "■ Parar" : "🔊 Escuchar"}</button></div>`;
+  if (m.tipo === "turno") return `<div class="m sis">Turno ${m.turno} · ${esc(m.titulo)}</div>`;
+  return "";
+}
+// Lector de voz del navegador (gratis, también en el móvil), como en EnSueño
+let hablando = null, vozViva = null;
+const textoPlano = s => s.replace(/\|\s*:?-{3,}:?\s*/g, "").replace(/\|/g, ", ").replace(/^\s*(?:>|[-*]|\d+\.)\s+/gm, "")
+  .replace(/\*\*?([^*]+)\*\*?/g, "$1").replace(/[«»—]/g, " ").replace(/(,\s*){2,}/g, ", ").replace(/\n+/g, ". ");
+function leerEnVoz(m) {
+  if (!("speechSynthesis" in window)) return avisar("Este navegador no tiene lector de voz");
+  if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
+  if (hablando === m.id) { hablando = null; return pintar(ultimo); }
+  const u = new SpeechSynthesisUtterance(textoPlano(m.texto));
+  u.lang = "es-ES"; u.rate = 1.2;
+  const v = speechSynthesis.getVoices().find(x => x.lang === "es-ES") || speechSynthesis.getVoices().find(x => x.lang.startsWith("es"));
+  if (v) u.voice = v;
+  u.onend = u.onerror = () => { if (hablando === m.id) { hablando = null; pintar(ultimo); } };
+  vozViva = u; speechSynthesis.resume(); hablando = m.id; speechSynthesis.speak(u); pintar(ultimo);
+}
+async function decirEnMesa(datos) {
+  const r = await fetch(`${BASE}api/p/${pid}/mesa`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) });
+  const x = await r.json().catch(() => ({}));
+  if (!r.ok) { avisar(x.error || "No se pudo"); return false; }
+  firma = ""; await cargar(); return true;
+}
+
+// La ficha (5e, SRD 5.1): atributos con su modificador, vida, competencias con lo que suman y, si tiene puntos, qué aprender
+let fichaAbierta = null;
+const ATR = [["fue", "FUE"], ["des", "DES"], ["con", "CON"], ["int", "INT"], ["sab", "SAB"], ["car", "CAR"]];
+const modDe = v => Math.floor((v - 10) / 2), conSigno = n => (n >= 0 ? "+" : "−") + Math.abs(n);
+const bonif = nivel => 2 + Math.floor((Math.max(1, Math.min(20, nivel)) - 1) / 4);
+function fichaHtml(d, id, p) {
+  const f = p.ficha, hs = Object.fromEntries(d.habilidades.map(h => [h.id, h]));
+  const cab = `<header><h2>${esc(p.nombre)}</h2><small>${esc(p.rol || "")}</small><button class="b cerrar" data-ficha="">Cerrar</button></header>`;
+  if (!f) return `<section class="ficha">${cab}<p class="vacio" style="margin-top:10px">Aún no tiene ficha: la pone el director.</p></section>`;
+  const pg = f.pg || {}, b = bonif(f.nivel || 1);
+  const comps = (f.competencias || []).map(h => `<span class="chip" title="${esc(hs[h]?.atributo || "")}">${esc(hs[h]?.nombre || h)}<b>${conSigno(modDe(f.atributos[hs[h]?.atributo] ?? 10) + b)}</b></span>`).join("");
+  const puede = p.tuyo && (f.puntos || 0) > 0 ? d.habilidades.filter(h => !(f.competencias || []).includes(h.id)) : [];
+  return `<section class="ficha">${cab}
+    <div class="vida"><span>Nivel <b>${f.nivel || 1}</b></span><span>CA <b>${f.ca ?? "—"}</b></span>
+      ${pg.max ? `<span>PG <b>${pg.actual}/${pg.max}</b></span><span class="barra"><i style="width:${Math.round(100 * pg.actual / pg.max)}%"></i></span>` : ""}</div>
+    <div class="atr">${ATR.map(([k, n]) => `<div><small>${n}</small><b>${f.atributos[k]}</b><span>${conSigno(modDe(f.atributos[k]))}</span></div>`).join("")}</div>
+    <div class="comps">${comps || `<span class="vacio">Sin competencias aún.</span>`}</div>
+    ${puede.length ? `<div class="aprende"><p>Puede aprender ${f.puntos === 1 ? "una cosa" : f.puntos + " cosas"}:</p>${puede.map(h => `<button class="b" data-aprender="${esc(h.id)}" data-pid="${esc(id)}">${esc(h.nombre)}</button>`).join("")}</div>` : ""}
+  </section>`;
+}
+// Trueque (sin moneda): lo que das, lo que pides y la balanza del mercader, como en el motor (nucleo/trueque.py)
+const tq = { mercado: null, persona: null, da: {}, pide: {} };
+let ultimo = null;
+function balanza(T, mercado, da, pide) {
+  const m = T.mercados[mercado], v = T.valores;
+  const das = Object.entries(da).reduce((s, [k, n]) => s + n * (v[k] || 0) * ((m.quiere || {})[k] || 1), 0);
+  const pides = Object.entries(pide).reduce((s, [k, n]) => s + n * (v[k] || 0), 0) * (1 + (m.margen || 0));
+  return { das, pides, acepta: das >= pides && das > 0 };
+}
+function truequeHtml(d, tuyos) {
+  const T = d.trueque, col = d.estado.colecciones;
+  tq.mercado ||= Object.keys(T.mercados)[0];
+  if (!tuyos.some(([id]) => id === tq.persona)) tq.persona = tuyos[0][0];
+  const p = col.personas[tq.persona], desde = p.donde, m = T.mercados[tq.mercado];
+  const mios = Object.values(col.objetos || {}).filter(o => o.donde === desde && o.cantidad >= 1 && T.valores[o.base]);
+  const fila = (lado, k, nombre, max, extra) => `<div class="tq-fila"><span class="n">${esc(nombre)} <small>${extra}</small></span>
+    <button data-tq="${lado}" data-k="${esc(k)}" data-d="-1" aria-label="Menos">−</button><b>${tq[lado][k] || 0}</b><button data-tq="${lado}" data-k="${esc(k)}" data-d="1" data-max="${max}" aria-label="Más">+</button></div>`;
+  const b = balanza(T, tq.mercado, tq.da, tq.pide), tot = Math.max(b.das + b.pides, 1);
+  return `<div class="tq-pie" style="margin-bottom:8px"><select class="ir" data-tq-sel="persona">${tuyos.map(([id, x]) => `<option value="${esc(id)}" ${id === tq.persona ? "selected" : ""}>${esc(x.nombre)} (desde ${esc(col.lugares[x.donde]?.nombre || x.donde)})</option>`).join("")}</select>
+      <select class="ir" data-tq-sel="mercado">${Object.keys(T.mercados).map(k => `<option value="${esc(k)}" ${k === tq.mercado ? "selected" : ""}>${esc(col.lugares[k]?.nombre || k)}</option>`).join("")}</select></div>
+    <div class="tq-cols"><div><h4>Das</h4>${mios.map(o => fila("da", o.base, o.nombre, Math.floor(o.cantidad), `tienes ${Math.floor(o.cantidad)}${(m.quiere || {})[o.base] > 1 ? " · lo quieren" : ""}`)).join("") || `<p class="vacio">Nada que cambiar en ${esc(col.lugares[desde]?.nombre || desde)}.</p>`}</div>
+      <div><h4>Pides</h4>${Object.entries(m.ofrece || {}).map(([k, n]) => fila("pide", k, k.replace(/_/g, " "), n, `tienen ${n}`)).join("")}</div></div>
+    <div class="balanza" title="Lo que das frente a lo que pides (con la parte del mercader)"><i style="width:${100 * b.das / tot}%;background:var(--bien)"></i><i style="width:${100 * b.pides / tot}%;background:var(--brea)"></i></div>
+    <div class="tq-pie"><span>${b.das || b.pides ? (b.acepta ? "El mercader acepta." : `Pide ${Math.ceil(b.pides - b.das)} más.`) : "Elige qué das y qué pides."}</span>
+      <button class="b si" data-tq-proponer ${b.acepta && Object.keys(tq.pide).length ? "" : "disabled"}>Proponer</button></div>
+    <p class="ayuda">El director cuenta el viaje y el regateo; hasta entonces, no cambia nada.</p>`;
+}
+// El mapa del mundo (mundo/mapas/): el terreno en letras, con relieve por la altura; los lugares encima, y a tu gente
+let mapaDatos = null, capaVista = null, marcas = [], primeraVez = true;      // la primera vez, el mapa abierto
+const capasCache = {};
+async function cargarMapa() {
+  const r = await fetch(`${BASE}api/p/${pid}/mapa`);
+  if (!r.ok) return;
+  const m = await r.json();
+  if (!m.capas?.length) return;                                    // un mundo sin mapa: no se enseña la sección
+  mapaDatos = m;
+  capaVista = mapaDatos.capas[0].id;
+}
+async function capa(id) {
+  if (capasCache[id]) return capasCache[id];
+  const c = mapaDatos.capas.find(x => x.id === id);
+  const [txt, alt] = await Promise.all([fetch(`${BASE}api/p/${pid}/mapa/${c.archivo}`).then(r => r.text()),
+    c.alt ? fetch(`${BASE}api/p/${pid}/mapa/${c.alt}`).then(r => r.ok ? r.json() : null).then(x => x?.alt) : null]);
+  return capasCache[id] = { ...c, filas: txt.split("\n").filter(Boolean), alt };
+}
+async function dibujarMapa(d) {
+  const cv = document.getElementById("lienzo");
+  if (!cv || !mapaDatos) return;
+  const c = await capa(capaVista), T = mapaDatos.terreno, esc2 = 4;            // 4 px por casilla
+  cv.width = c.w * esc2; cv.height = c.h * esc2;
+  const g = cv.getContext("2d"), img = g.createImageData(c.w, c.h);
+  for (let y = 0; y < c.h; y++) for (let x = 0; x < c.w; x++) {
+    const ch = c.filas[y]?.[x] || "~", col = (T[ch] || T["~"])[1];
+    let luz = 1;
+    if (c.alt && ch !== "~" && ch !== "-" && y > 0 && x > 0) luz = Math.max(.7, Math.min(1.3, 1 + ((c.alt[y][x] || 0) - (c.alt[y - 1][x - 1] || 0)) / (c.metros / 2)));
+    const i = 4 * (y * c.w + x);
+    img.data[i] = col[0] * luz; img.data[i + 1] = col[1] * luz; img.data[i + 2] = col[2] * luz; img.data[i + 3] = 255;
+  }
+  const tmp = document.createElement("canvas"); tmp.width = c.w; tmp.height = c.h; tmp.getContext("2d").putImageData(img, 0, 0);
+  g.imageSmoothingEnabled = false; g.drawImage(tmp, 0, 0, cv.width, cv.height);
+  // los lugares (los que tienen lat/lon y caen en esta capa) y cuántos de los tuyos hay en cada uno
+  const col = d.estado.colecciones, tuyos = {};
+  for (const p of Object.values(col.personas || {})) if (p.tuyo) tuyos[p.donde] = (tuyos[p.donde] || 0) + 1;
+  marcas = [];
+  for (const [id, l] of Object.entries(col.lugares || {})) {
+    if (l.lat == null) continue;
+    const x = (l.lon - c.lon_w) / c.dlon * esc2, y = (c.lat_n - l.lat) / c.dlat * esc2;
+    if (x < 0 || y < 0 || x > cv.width || y > cv.height) continue;
+    const r = Math.max(5, cv.width / 140), visto = l.estado && l.estado !== "oido";
+    g.beginPath(); g.arc(x, y, r, 0, 2 * Math.PI);
+    g.fillStyle = visto ? "#f2b134" : "rgba(16,20,42,.55)"; g.fill();
+    g.lineWidth = Math.max(1.5, r / 3); g.strokeStyle = visto ? "#10142a" : "#f2b134"; g.stroke();
+    if (tuyos[id]) {
+      g.font = `700 ${Math.round(r * 2.2)}px Atkinson Hyperlegible, sans-serif`; g.fillStyle = "#ede0bb"; g.strokeStyle = "#10142a"; g.lineWidth = 3;
+      g.strokeText(`${tuyos[id]}`, x + r * 1.3, y - r); g.fillText(`${tuyos[id]}`, x + r * 1.3, y - r);
+    }
+    marcas.push({ id, x, y, l, n: tuyos[id] || 0 });
+  }
+}
+function pintar(d) {
+  ultimo = d;
+  const e = d.estado, col = e.colecciones, w = d.mundo;
+  document.title = `${d.partida.nombre} · partida`;
+  $("nombre").textContent = d.partida.nombre;
+  $("mundo").textContent = [w.nombre, w.subtitulo].filter(Boolean).join(" · ");
+  const cl = e.reloj.clima;
+  $("reloj").textContent = (cl ? cl.icono + " " : "") + d.reloj.split(" (")[0];
+  $("reloj").title = cl ? cl.efecto : "";
+  $("turno").textContent = e.turno ? `turno ${e.turno}` : "sin empezar";
+  // el reloj de la amenaza más cercana (las naves de Roma), siempre a la vista
+  const am = Object.values(col.amenazas || {}).filter(a => !a.llego).sort((a, b) => a.dia - b.dia)[0];
+  $("amenaza").innerHTML = am ? `<span class="amenaza" title="${esc(am.que)}${am.nota ? " · " + esc(am.nota) : ""}">⏳ <span class="largo">${esc(am.que)}: </span>${am.dia > e.reloj.dia ? `${am.dia - e.reloj.dia} días` : "¡aquí!"}</span>` : "";
+  const abiertas = new Set([...document.querySelectorAll("details.s[open]")].map(x => x.dataset.s));
+  const partes = [];
+  const esperando = esperaDirector(d.mesa), evento = ev => (d.mesa || []).some(m => m.evento === ev);
+  if (d.construccion) {
+    partes.push(`<section class="foco"><h2>Mundo en construcción</h2><p>Le dictas el lore al director en la mesa y él lo escribe.</p>
+      ${esperando ? ESPERA : evento("crear_mundo") ? "" : `<button class="grande" data-evento="crear_mundo">Empezar a dictar</button>`}
+      <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--arena-2)">Lo que falta: ${d.construccion.filter(a => !a.ok).length} de ${d.construccion.filter(a => !a.opcional).length}</summary>
+      ${d.construccion.map(a => `<p class="aviso" style="margin:4px 0">${a.ok ? "✅" : "⬜"} ${esc(a.nombre)}${a.falta && !a.ok ? ` <small style="color:var(--arena-3)">— ${esc(a.falta)}</small>` : ""}</p>`).join("")}</details></section>`);
+  } else if (!e.turno) partes.push(`<section class="foco"><h2>Sesión cero</h2>
+    ${w.fecha_inicio ? `<p><b>Cuándo:</b> ${esc(w.fecha_inicio)}</p>` : ""}<p><b>Eres:</b> ${esc(w.jugador || "quien elijas")}</p>
+    ${esperando ? ESPERA : evento("empezar") ? "" : `<button class="grande" data-evento="empezar">Empezar</button>`}</section>`);
+  else {
+    const u = e.timeline[e.timeline.length - 1];
+    partes.push(`<section class="foco"><h2>${esc(u.titulo)}</h2><p>${esc(u.evento)}</p>${(e.avisos || []).map(a => `<p class="aviso">${esc(a)}</p>`).join("")}</section>`);
+  }
+  partes.push(seccion("message-circle", "Mesa", (d.mesa || []).length ? `${(d.mesa || []).filter(m => m.de !== "motor").length} mensajes` : "habla con el director",
+    `<div class="mesa-hilo" id="hilo">${(d.mesa || []).map(htmlMensaje).join("") || `<p class="vacio">Escribe lo que haces; el director contesta aquí.</p>`}
+     ${esperando ? ESPERA : ""}</div>
+     <div class="mesa-pie"><textarea id="decir" rows="1" placeholder="Lo que haces o dices…" aria-label="Escribir en la mesa"></textarea>
+     <button class="b si" data-enviar aria-label="Enviar"><i data-lucide="send" class="icon"></i></button></div>`, abiertas.has("Mesa") || primeraVez));
+  const lugares = Object.entries(col.lugares || {});
+  if (mapaDatos) partes.push(seccion("map", "Mapa", mapaDatos.capas.find(c => c.id === capaVista)?.nombre || "",
+    `<div class="capas">${mapaDatos.capas.map(c => `<button class="b" data-capa="${esc(c.id)}" aria-pressed="${c.id === capaVista}">${esc(c.nombre)}</button>`).join("")}</div>
+     <div class="mapa"><canvas id="lienzo" aria-label="Mapa"></canvas></div><p class="mapa-sel" id="mapa-sel">Toca un lugar para ver qué es.</p>`,
+    abiertas.has("Mapa") || primeraVez));
+  partes.push(seccion("map-pin", "Lugares", `${lugares.length}`, lugares.map(([id, l]) =>
+    `<div class="fila"><div><b>${esc(l.nombre)}</b> <small>${esc(l.tipo || "")}</small><br><small>${esc(l.nota || "")}</small></div><span class="v">${esc(ESTADO_LUGAR[l.estado] || l.estado || "")}</span></div>`).join("") || `<p class="vacio">Ninguno todavía.</p>`, abiertas.has("Lugares")));
+  const sel = fichaAbierta && col.personas?.[fichaAbierta];
+  if (sel) partes.push(fichaHtml(d, fichaAbierta, sel));
+  const tuyos = Object.entries(col.personas || {}).filter(([, p]) => p.tuyo);
+  if (d.trabajos.length) partes.push(seccion("table-2", "Trabajos", tuyos.length ? `${tuyos.length} de los tuyos` : "aún nadie", tuyos.length ?
+    `<div class="tabla"><table><tr><th></th>${d.trabajos.map(t => `<th title="${esc(t.nombre)}"><i data-lucide="${esc(t.icono || "circle")}" class="icon"></i></th>`).join("")}</tr>
+     ${tuyos.map(([pid, p]) => `<tr><td class="quien">${esc(p.nombre.split(" ")[0])}</td>${d.trabajos.map(t => {
+       const v = (p.trabajos || {})[t.id] || 0;
+       return `<td><button class="p" data-v="${v}" data-pid="${esc(pid)}" data-t="${esc(t.id)}" title="${esc(p.nombre)} · ${esc(t.nombre)}: ${v ? "prioridad " + v : "no lo hace"}">${v || "·"}</button></td>`;
+     }).join("")}</tr>`).join("")}</table></div><p class="ayuda">Toca para cambiar: 1 es lo primero que hace; · no lo hace.</p>`
+    : `<p class="vacio">Cuando tengas gente (en la sesión cero), aquí decides quién hace qué.</p>`, abiertas.has("Trabajos") || (tuyos.length > 0 && !abiertas.size && !firma)));
+  if (Object.keys(d.trueque?.mercados || {}).length && tuyos.length) partes.push(seccion("scale", "Trueque", "cosa por cosa", truequeHtml(d, tuyos), abiertas.has("Trueque")));
+  // la forja: pedir una mecánica jugando; lo pedido, en obra y listo, con su interruptor
+  const fx = d.forja || [], ESTADO_FORJA = { pedido: "pedido", en_obra: "en obra", probando: "probando", listo: "listo", fallo: "falló" };
+  partes.push(seccion("hammer", "La forja", fx.length ? `${fx.filter(x => x.encendido).length} en marcha · ${fx.filter(x => !x.encendido).length} más` : "pide una mecánica nueva",
+    `<div class="forja-pide"><input id="forja-que" maxlength="160" placeholder="Quiero que haya… (cría de caballos, un oráculo)"><button class="b si" data-forja-pedir>Pedir</button></div>
+     ${fx.map(x => `<div class="fila"><div><b>${esc(x.nombre)}</b><br><small>${esc(x.como_se_nota || x.que)}</small></div>
+       <span class="v">${x.estado === "listo" ? `<button class="interruptor" role="switch" aria-checked="${!!x.encendido}" aria-label="Encender ${esc(x.nombre)}" data-forja="${esc(x.id)}"></button>` : `<span class="chip ${esc(x.estado)}">${esc(ESTADO_FORJA[x.estado] || x.estado)}</span>`}</span></div>`).join("")}
+     <p class="ayuda">El director lo convierte en ficha y se construye mientras juegas; cuando pasa sus pruebas, lo enciendes aquí.</p>`, abiertas.has("La forja")));
+  const ords = [...(d.ordenes || [])].reverse().slice(0, 8);
+  if (ords.length) partes.push(seccion("send", "Órdenes", `${ords.filter(o => o.estado === "para_narrar").length} para narrar`, ords.map(o =>
+    `<div class="fila"><div>${esc(o.texto)}${o.motivo ? `<br><small>${esc(o.motivo)}</small>` : ""}</div><span class="v"><span class="chip ${o.estado}">${esc(o.estado.replace("_", " "))}</span></span></div>`).join(""), abiertas.has("Órdenes")));
+  // lo que hay, por lugar (lo que producen los trabajos y lo que se come)
+  const porLugar = {};
+  for (const o of Object.values(col.objetos || {})) if (o.cantidad > 0) (porLugar[o.donde] ||= []).push(o);
+  const nObj = Object.values(porLugar).reduce((n, xs) => n + xs.length, 0);
+  if (nObj) partes.push(seccion("package", "Lo que hay", `${nObj} cosas`, Object.entries(porLugar).map(([l, xs]) =>
+    `<p class="ayuda" style="margin:10px 0 2px">${esc(col.lugares?.[l]?.nombre || l)}</p>` + xs.map(o =>
+      `<div class="fila"><div>${esc(o.nombre)}</div><span class="v">${+(+o.cantidad).toFixed(2)}${o.unidad ? " " + esc(o.unidad) : ""}</span></div>`).join("")).join(""), abiertas.has("Lo que hay")));
+  const gente = Object.entries(col.personas || {});
+  partes.push(seccion("users", "Gente", `${gente.length}`, gente.map(([id, p]) =>
+    `<div class="fila"><div><button class="ver" data-ficha="${esc(id)}" title="Ver su ficha">${esc(p.nombre)}</button><br><small>${esc(p.rol || "")}</small>${p.tuyo ? `<br><select class="ir" data-ir="${esc(id)}" aria-label="Mandar a ${esc(p.nombre)} a otro sitio"><option value="">Mandar a…</option>${lugares.filter(([lid]) => lid !== p.donde).map(([lid, l]) => `<option value="${esc(lid)}">${esc(l.nombre)}</option>`).join("")}</select>` : ""}</div><span class="v">${p.animo != null ? `<span title="${esc((p.animo_motivos || []).map(([q, v]) => `${q} ${v > 0 ? "+" : ""}${v}`).join(" · ") || "ánimo")}">${p.animo >= 4 ? "🙂" : p.animo >= 0 ? "😐" : p.animo > -5 ? "🙁" : "😣"}</span> ` : ""}${p.hambre ? "🍲 " : ""}${esc((col.lugares?.[p.donde] || {}).nombre || p.donde)}</span></div>`).join("") || `<p class="vacio">Aún no conoces a nadie.</p>`, abiertas.has("Gente")));
+  const tl = [...e.timeline].reverse();
+  partes.push(seccion("scroll-text", "Lo que pasó", tl.length ? `${tl.length} turnos` : "nada aún", tl.map(t =>
+    `<div class="fila"><div><b>T${t.turno} · ${esc(t.titulo)}</b><br><small>${esc(t.evento)}</small></div><span class="v">día ${t.dia}</span></div>`).join("") || `<p class="vacio">La partida no ha empezado.</p>`, abiertas.has("Lo que pasó")));
+  const ds = e.decisiones || [];
+  if (ds.length) partes.push(seccion("gavel", "Decisiones", `${ds.length}`, ds.map(x =>
+    `<div class="fila"><div><b>${esc(x.que)}</b><br><small>${esc(x.porque)}</small></div><span class="v">T${x.turno}</span></div>`).join(""), abiertas.has("Decisiones")));
+  partes.push(seccion("landmark", "La época", "la constitución del mundo", `<pre class="const">${esc(w.constitucion || "")}</pre>`, abiertas.has("La época")));
+  const borrador = document.getElementById("decir"), foco = document.activeElement === borrador, texto = borrador?.value || "";
+  const hiloAntes = document.getElementById("hilo"), alFinal = !hiloAntes || hiloAntes.scrollHeight - hiloAntes.scrollTop - hiloAntes.clientHeight < 80;
+  $("main").innerHTML = partes.join("");
+  const nuevo = document.getElementById("decir");
+  if (nuevo) { nuevo.value = texto; if (foco) nuevo.focus(); }
+  const hilo = document.getElementById("hilo");
+  if (hilo && alFinal) hilo.scrollTop = hilo.scrollHeight;
+  primeraVez = false;
+  dibujarMapa(d);
+  window.lucide?.createIcons();
+}
+
+async function cargar() {
+  try {
+    const r = await fetch(`${BASE}api/p/${pid}`);
+    if (!r.ok) { $("main").innerHTML = `<p class="vacio">Esa partida no existe. <a href="${BASE}" style="color:var(--brea)">Volver</a></p>`; return; }
+    const txt = await r.text();
+    if (txt !== firma) { firma = txt; pintar(JSON.parse(txt)); }
+  } catch (e) { /* sin red: se reintenta */ }
+}
+// una orden al motor; si no vale, el motor dice por qué y no se guarda nada
+async function orden(tipo, datos) {
+  const r = await fetch(`${BASE}api/p/${pid}/orden`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tipo, datos }) });
+  const x = await r.json().catch(() => ({}));
+  if (!r.ok) avisar(x.error || "No se pudo");
+  firma = "";
+  await cargar();
+}
+async function forja(fid, datos) {
+  const r = await fetch(`${BASE}api/p/${pid}/forja${fid ? "/" + fid : ""}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) });
+  const x = await r.json().catch(() => ({}));
+  if (!r.ok) avisar(x.error || "No se pudo");
+  firma = "";
+  await cargar();
+}
+function avisar(txt) {
+  const d = document.createElement("div"); d.className = "toast"; d.textContent = txt; document.body.appendChild(d);
+  setTimeout(() => d.remove(), 4000);
+}
+document.addEventListener("click", ev => {
+  const evb = ev.target.closest("[data-evento]");
+  if (evb) { evb.disabled = true; return decirEnMesa({ evento: evb.dataset.evento }); }
+  if (ev.target.closest("[data-enviar]")) return enviarMesa();
+  const oir = ev.target.closest("[data-oir]");
+  if (oir) { const m = (ultimo?.mesa || []).find(x => String(x.id) === oir.dataset.oir); if (m) leerEnVoz(m); return; }
+  if (ev.target.closest("[data-forja-pedir]")) {
+    const que = document.getElementById("forja-que").value.trim();
+    if (!que) return avisar("Escribe qué quieres que haya");
+    return forja("", { nombre: que.split(/[,.(:;]/)[0].trim().slice(0, 40), que });
+  }
+  const cp = ev.target.closest("[data-capa]");
+  if (cp) { capaVista = cp.dataset.capa; return pintar(ultimo); }
+  if (ev.target.id === "lienzo") {
+    const cv = ev.target, rc = cv.getBoundingClientRect(), x = (ev.clientX - rc.left) * cv.width / rc.width, y = (ev.clientY - rc.top) * cv.height / rc.height;
+    const m = marcas.map(k => ({ ...k, d: Math.hypot(k.x - x, k.y - y) })).sort((a, b) => a.d - b.d)[0];
+    const sel = document.getElementById("mapa-sel");
+    if (sel) sel.innerHTML = m && m.d < cv.width / 25 ? `<b>${esc(m.l.nombre)}</b> · ${esc(m.l.tipo || "")}${m.l.nota ? " · " + esc(m.l.nota) : ""}${m.n ? ` · ${m.n} de los tuyos` : ""}` : "Aquí no hay nada que conozcas.";
+    return;
+  }
+  const sw = ev.target.closest("[data-forja]");
+  if (sw) return forja(sw.dataset.forja, { encendido: sw.getAttribute("aria-checked") !== "true" });
+  const st = ev.target.closest("[data-tq]");
+  if (st) {
+    const lado = st.dataset.tq, k = st.dataset.k, n = Math.max(0, Math.min(+(st.dataset.max ?? 1e9), (tq[lado][k] || 0) + +st.dataset.d));
+    if (n) tq[lado][k] = n; else delete tq[lado][k];
+    return pintar(ultimo);
+  }
+  if (ev.target.closest("[data-tq-proponer]")) {
+    const desde = ultimo.estado.colecciones.personas[tq.persona].donde;
+    orden("trocar", { persona: tq.persona, mercado: tq.mercado, desde, da: { ...tq.da }, pide: { ...tq.pide } }).then(() => { tq.da = {}; tq.pide = {}; pintar(ultimo); });
+    return;
+  }
+  const fi = ev.target.closest("[data-ficha]");
+  if (fi) { fichaAbierta = fi.dataset.ficha || null; firma = ""; cargar().then(() => fichaAbierta && document.querySelector(".ficha")?.scrollIntoView({ block: "start", behavior: "smooth" })); return; }
+  const ap = ev.target.closest("[data-aprender]");
+  if (ap) return orden("aprender", { persona: ap.dataset.pid, habilidad: ap.dataset.aprender });
+  const b = ev.target.closest("button.p");
+  if (b) orden("trabajo", { persona: b.dataset.pid, trabajo: b.dataset.t, prioridad: (+b.dataset.v + 1) % 5 });
+});
+async function enviarMesa() {
+  const ta = document.getElementById("decir"), texto = ta?.value.trim();
+  if (!texto) return;
+  ta.value = "";
+  if (!await decirEnMesa({ texto })) ta.value = texto;
+}
+document.addEventListener("keydown", ev => {
+  if (ev.target.id === "decir" && ev.key === "Enter" && !ev.shiftKey && !matchMedia("(pointer: coarse)").matches) { ev.preventDefault(); enviarMesa(); }
+});
+document.addEventListener("change", ev => {
+  const q = ev.target.closest("select[data-tq-sel]");
+  if (q) { tq[q.dataset.tqSel] = q.value; tq.da = {}; tq.pide = {}; return pintar(ultimo); }
+  const s = ev.target.closest("select[data-ir]");
+  if (s && s.value) orden("ir", { persona: s.dataset.ir, a: s.value });
+});
+cargarMapa().finally(() => { firma = ""; cargar(); });
+setInterval(cargar, 3000);
+</script>
+</body>
+</html>

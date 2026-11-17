@@ -1,0 +1,3 @@
+{"coleccion": "objetos", "obligatorios": ["nombre", "cantidad", "donde"], "refs": {"donde": "lugar"}, "id": "nombre",
+ "catalogo": "objetos", "clave_catalogo": "nombre",
+ "_": "cantidad en su unidad (unidad: «cabezas», «sacos»…). Lo que no está en el catálogo avisa: nuevo_en_mundo para aceptarlo."}

@@ -1,0 +1,17 @@
+{"_": "El tiempo de cada día por estación (sorteo fijo por día). rinde: lo que rinde el trabajo al aire libre ese día. El año empieza en primavera (el 123 a. C. de la partida) y cada estación dura 91 días.",
+ "empieza": "primavera", "dias_estacion": 91,
+ "tiempos": {
+  "sol":        {"icono": "☀️", "efecto": "sol: buen día para el campo y la mar", "rinde": 1},
+  "nubes":      {"icono": "⛅", "efecto": "nubes: día normal", "rinde": 1},
+  "tramontana": {"icono": "🌬️", "efecto": "tramontana: frío y mar gruesa al norte; las barcas, mejor en el sur", "rinde": 0.9},
+  "levante":    {"icono": "💨", "efecto": "levante: mar de fondo en las calas del este; buen viento para ir a poniente", "rinde": 1},
+  "lluvia":     {"icono": "🌧️", "efecto": "lluvia: el trabajo de fuera rinde la mitad; las cisternas se llenan", "rinde": 0.5},
+  "calor":      {"icono": "🥵", "efecto": "calor fuerte: se trabaja al alba y al atardecer", "rinde": 0.75},
+  "temporal":   {"icono": "⛈️", "efecto": "temporal: nadie sale a la mar; el campo, parado", "rinde": 0.2}
+ },
+ "estaciones": {
+  "primavera": {"sol": 4, "nubes": 3, "tramontana": 1, "levante": 1, "lluvia": 2, "calor": 0.3, "temporal": 0.3},
+  "verano":    {"sol": 6, "nubes": 1, "tramontana": 0.3, "levante": 1, "lluvia": 0.3, "calor": 3, "temporal": 0.2},
+  "otoño":     {"sol": 3, "nubes": 3, "tramontana": 1.5, "levante": 2, "lluvia": 3, "calor": 0.3, "temporal": 1},
+  "invierno":  {"sol": 2, "nubes": 3, "tramontana": 3, "levante": 1, "lluvia": 3, "calor": 0, "temporal": 1.5}
+ }}

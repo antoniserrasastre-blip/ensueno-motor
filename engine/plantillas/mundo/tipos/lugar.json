@@ -1,0 +1,1 @@
+{"coleccion": "lugares", "obligatorios": ["nombre"], "defecto": {"estado": "oido"}, "refs": {"cerca": "lugar[]"}, "id": "nombre", "_": "tipo: poblado, ciudad, santuario, cueva, cala, bosque… (lo que el mundo diga). estado: oido | visto | conocido. lat/lon si el mundo tiene mapa real; si no, no hacen falta."}

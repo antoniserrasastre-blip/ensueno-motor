@@ -1,0 +1,1 @@
+{"coleccion": "personas", "obligatorios": ["nombre", "donde"], "defecto": {"conocido": "visto", "relacion": 0}, "refs": {"donde": "lugar", "poblado": "lugar"}, "id": "nombre", "_": "poblado: de dónde es. rol: una línea. tuyo: true si es de la gente del jugador (la tabla de trabajos). ficha: la de 5e."}

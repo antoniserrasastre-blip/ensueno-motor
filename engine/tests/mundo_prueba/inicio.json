@@ -1,0 +1,49 @@
+{
+ "lugares": {
+  "poblado": {
+   "nombre": "El poblado"
+  },
+  "monte": {
+   "nombre": "El monte"
+  }
+ },
+ "personas": {
+  "abi": {
+   "nombre": "Abi",
+   "donde": "poblado",
+   "animo": 0,
+   "tuyo": true,
+   "ficha": {
+    "atributos": {
+     "fue": 10,
+     "des": 15,
+     "con": 12,
+     "int": 9,
+     "sab": 13,
+     "car": 8
+    },
+    "nivel": 5,
+    "competencias": [
+     "honda"
+    ],
+    "pg": {
+     "max": 20,
+     "actual": 20
+    },
+    "ca": 12,
+    "puntos": 1
+   }
+  },
+  "forastero": {
+   "nombre": "Forastero",
+   "donde": "poblado"
+  }
+ },
+ "objetos": {
+  "trigo": {
+   "nombre": "Trigo",
+   "cantidad": 10,
+   "donde": "poblado"
+  }
+ }
+}

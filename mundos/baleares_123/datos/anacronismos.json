@@ -1,0 +1,167 @@
+{
+ "_": "Bloquea: no existe en este mundo (ni en la narración). Avisa: es de fuera (de Roma o de Ebusus); se puede conseguir antes («adelantarse») con decidir y permite.",
+ "bloquea": [
+  {
+   "que": "pólvora",
+   "palabras": [
+    "pólvora",
+    "cañón",
+    "arcabuz",
+    "mosquete",
+    "pistola",
+    "bombarda"
+   ]
+  },
+  {
+   "que": "estribos y herraduras",
+   "palabras": [
+    "estribo",
+    "herradura"
+   ]
+  },
+  {
+   "que": "papel e imprenta",
+   "palabras": [
+    "hoja de papel",
+    "papel de escribir",
+    "imprenta",
+    "libro impreso"
+   ]
+  },
+  {
+   "que": "molino de agua",
+   "palabras": [
+    "molino de agua",
+    "noria de cangilones"
+   ]
+  },
+  {
+   "que": "vidrio soplado",
+   "palabras": [
+    "vidrio soplado",
+    "botella de vidrio"
+   ]
+  },
+  {
+   "que": "cultivos de América",
+   "palabras": [
+    "maíz",
+    "patata",
+    "tomate",
+    "pimiento",
+    "tabaco",
+    "cacao"
+   ]
+  },
+  {
+   "que": "cultivos que aún no llegan",
+   "palabras": [
+    "azúcar",
+    "naranjo",
+    "limonero",
+    "limón",
+    "café"
+   ]
+  },
+  {
+   "que": "cristianismo",
+   "palabras": [
+    "cristiano",
+    "iglesia",
+    "obispo",
+    "monje"
+   ]
+  },
+  {
+   "que": "brújula y relojes",
+   "palabras": [
+    "brújula",
+    "reloj mecánico"
+   ]
+  }
+ ],
+ "avisa": [
+  {
+   "que": "moneda",
+   "palabras": [
+    "moneda",
+    "denario",
+    "sestercio",
+    "dracma",
+    "shekel"
+   ],
+   "de": "fuera: en las islas no se usa"
+  },
+  {
+   "que": "torno de alfarero",
+   "palabras": [
+    "torno de alfarero",
+    "rueda de alfarero",
+    "cerámica de torno"
+   ],
+   "de": "Ebusus y Roma"
+  },
+  {
+   "que": "escritura",
+   "palabras": [
+    "escritura",
+    "tablilla de cera",
+    "alfabeto",
+    "latín escrito"
+   ],
+   "de": "Roma y Ebusus"
+  },
+  {
+   "que": "armas de Roma",
+   "palabras": [
+    "gladio",
+    "pilum",
+    "escorpión",
+    "catapulta",
+    "ballista"
+   ],
+   "de": "Roma"
+  },
+  {
+   "que": "obras de Roma",
+   "palabras": [
+    "calzada",
+    "acueducto",
+    "hormigón",
+    "foro",
+    "arco de medio punto"
+   ],
+   "de": "Roma"
+  },
+  {
+   "que": "viña y olivar",
+   "palabras": [
+    "viñedo",
+    "viña",
+    "olivar",
+    "lagar",
+    "almazara"
+   ],
+   "de": "Roma y Ebusus"
+  },
+  {
+   "que": "nave de altura",
+   "palabras": [
+    "trirreme",
+    "quinquerreme",
+    "nave de carga",
+    "vela de altura"
+   ],
+   "de": "Roma y Ebusus"
+  },
+  {
+   "que": "tributo",
+   "palabras": [
+    "tributo",
+    "impuesto",
+    "censo"
+   ],
+   "de": "Roma"
+  }
+ ]
+}

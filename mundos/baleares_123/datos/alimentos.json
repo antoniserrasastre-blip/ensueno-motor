@@ -1,0 +1,4 @@
+{"_": "Lo que se come (sistema comida): raciones por unidad y el orden (primero lo que se estropea antes). Cada persona come una ración al día.",
+ "por_persona": 1,
+ "raciones": {"leche": 0.5, "pescado": 1, "carne": 2, "pan": 1, "queso": 2, "pescado_salado": 1, "carne_salada": 2, "trigo": 1, "cebada": 1, "bellotas": 0.5, "algarrobas": 0.5, "miel": 1},
+ "orden": ["leche", "pescado", "carne", "pan", "queso", "pescado_salado", "carne_salada", "trigo", "cebada", "algarrobas", "bellotas", "miel"]}

@@ -1,0 +1,3 @@
+{"_": "De qué sale el ánimo (sistema animo): base, hambre por día (hasta 5), el tiempo, hacer lo que uno sabe y los motivos del director. crisis: por debajo, el motor avisa de una escena.",
+ "base": 2, "hambre_por_dia": -2, "hace_lo_suyo": 1, "crisis": -5,
+ "clima": {"sol": 1, "lluvia": -1, "temporal": -2, "calor": -1}}

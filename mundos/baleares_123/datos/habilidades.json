@@ -1,0 +1,23 @@
+{"_": "Las habilidades de las islas (las de catalogo.json) y el atributo de 5e con el que se tiran: fue, des, con, int, sab, car.",
+ "habilidades": [
+  {"id": "honda", "nombre": "Honda", "atributo": "des"},
+  {"id": "lanza", "nombre": "Lanza", "atributo": "fue"},
+  {"id": "pastoreo", "nombre": "Pastoreo", "atributo": "sab"},
+  {"id": "labranza", "nombre": "Labranza", "atributo": "con"},
+  {"id": "pesca", "nombre": "Pesca", "atributo": "sab"},
+  {"id": "navegar", "nombre": "Navegar la costa", "atributo": "sab"},
+  {"id": "piedra", "nombre": "Piedra seca", "atributo": "fue"},
+  {"id": "bronce", "nombre": "Fundir bronce", "atributo": "int"},
+  {"id": "tejer", "nombre": "Tejer", "atributo": "des"},
+  {"id": "curar", "nombre": "Curar", "atributo": "sab"},
+  {"id": "rastrear", "nombre": "Rastrear", "atributo": "sab"},
+  {"id": "trocar", "nombre": "Trocar", "atributo": "car"},
+  {"id": "punico", "nombre": "Hablar púnico", "atributo": "int"},
+  {"id": "latin", "nombre": "Hablar latín", "atributo": "int"},
+  {"id": "genealogias", "nombre": "Recordar genealogías", "atributo": "int"},
+  {"id": "presagios", "nombre": "Presagios", "atributo": "sab"},
+  {"id": "sigilo", "nombre": "Sigilo", "atributo": "des"},
+  {"id": "aguante", "nombre": "Aguante", "atributo": "con"},
+  {"id": "persuadir", "nombre": "Persuadir", "atributo": "car"},
+  {"id": "intimidar", "nombre": "Intimidar", "atributo": "car"}
+ ]}

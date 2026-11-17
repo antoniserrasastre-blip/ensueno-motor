@@ -1,0 +1,13 @@
+{"_": "Lo que hay en las islas en el 123 a. C. Lo demás avisa al crearlo («¿existe aquí?»).",
+ "objetos": ["Honda", "Honda de junco", "Honda de crin", "Piedras de honda", "Glandes de plomo", "Lanza", "Jabalina", "Escudo de piel",
+             "Puñal de bronce", "Espada de hierro", "Hacha de bronce", "Cuchillo", "Punzón", "Aguja de hueso", "Huso", "Telar",
+             "Molino de mano", "Olla", "Vasija", "Ánfora", "Cuenco", "Cesto de palma", "Cuerda de esparto", "Red", "Anzuelo",
+             "Barca", "Remo", "Piel", "Lana", "Tela de lana", "Manto", "Sal", "Trigo", "Cebada", "Harina", "Pan", "Queso", "Leche",
+             "Carne", "Carne salada", "Pescado", "Pescado salado", "Miel", "Bellotas", "Algarrobas", "Vino", "Aceite",
+             "Ovejas", "Cabras", "Cerdos", "Bueyes", "Perros", "Bronce", "Lingote de bronce", "Plomo", "Hierro", "Estaño",
+             "Cuentas de pasta vítrea", "Collar", "Brazalete de bronce", "Cabeza de toro de bronce", "Figura de guerrero de bronce",
+             "Cal", "Leña", "Carbón", "Piedra", "Teja", "Adobe", "Esclavo"],
+ "oficios": ["hondero", "pastor", "labrador", "pescador", "salinero", "alfarero", "tejedora", "broncista", "herrero",
+             "cantero", "curandera", "cazador", "barquero", "mercader", "guardián del santuario", "viejo de las genealogías"],
+ "habilidades": ["honda", "lanza", "pastoreo", "labranza", "pesca", "navegar la costa", "piedra seca", "fundir bronce",
+                 "tejer", "curar", "rastrear", "trocar", "hablar púnico", "hablar latín", "recordar genealogías", "presagios"]}

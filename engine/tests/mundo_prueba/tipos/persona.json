@@ -1,0 +1,2 @@
+{"coleccion": "personas", "obligatorios": ["nombre", "donde"], "defecto": {"animo": 0},
+ "refs": {"donde": "lugar", "amigos": "persona[]"}, "id": "nombre"}

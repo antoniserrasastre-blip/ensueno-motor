@@ -1,0 +1,182 @@
+{
+ "_": "Las capas del mapa (terreno en letras, una por casilla; alt: altura para el relieve). Salen del mapa de EnSueño (partida/mapa/), copiadas aquí para que el mundo se pueda llevar entero. terreno: letra → [nombre, color].",
+ "capas": [
+  {
+   "id": "baleares",
+   "nombre": "Las islas",
+   "archivo": "baleares.txt",
+   "alt": "alt_baleares.json",
+   "lat_n": 40.15,
+   "lon_w": -0.6,
+   "dlat": 0.018026137899954935,
+   "dlon": 0.023233571981724793,
+   "w": 217,
+   "h": 89,
+   "metros": 2000
+  },
+  {
+   "id": "mallorca",
+   "nombre": "Mallorca",
+   "archivo": "mallorca.txt",
+   "alt": "alt_mallorca.json",
+   "lat_n": 39.97,
+   "lon_w": 2.3,
+   "dlat": 0.003605227579990987,
+   "dlon": 0.004658402569634403,
+   "w": 258,
+   "h": 247,
+   "metros": 400
+  },
+  {
+   "id": "pitiusas",
+   "nombre": "Ibiza y Formentera",
+   "archivo": "pitiusas.txt",
+   "alt": "alt_pitiusas.json",
+   "lat_n": 39.15,
+   "lon_w": 1.15,
+   "dlat": 0.003605227579990987,
+   "dlon": 0.0046161484794195445,
+   "w": 108,
+   "h": 147,
+   "metros": 400
+  }
+ ],
+ "terreno": {
+  "~": [
+   "Mar abierto",
+   [
+    24,
+    52,
+    82
+   ]
+  ],
+  "-": [
+   "Agua somera",
+   [
+    40,
+    98,
+    118
+   ]
+  ],
+  "_": [
+   "Playa",
+   [
+    214,
+    194,
+    142
+   ]
+  ],
+  "^": [
+   "Roca",
+   [
+    118,
+    106,
+    94
+   ]
+  ],
+  ",": [
+   "Garriga",
+   [
+    104,
+    128,
+    72
+   ]
+  ],
+  "T": [
+   "Pinar",
+   [
+    58,
+    98,
+    60
+   ]
+  ],
+  "n": [
+   "Cerro",
+   [
+    128,
+    118,
+    86
+   ]
+  ],
+  "A": [
+   "Cumbre",
+   [
+    170,
+    158,
+    124
+   ]
+  ],
+  "=": [
+   "Sendero",
+   [
+    196,
+    172,
+    126
+   ]
+  ],
+  "h": [
+   "Casas",
+   [
+    186,
+    104,
+    72
+   ]
+  ],
+  "r": [
+   "Torre",
+   [
+    150,
+    142,
+    132
+   ]
+  ],
+  "w": [
+   "Agua dulce",
+   [
+    76,
+    160,
+    200
+   ]
+  ],
+  "v": [
+   "Huerto",
+   [
+    150,
+    168,
+    86
+   ]
+  ],
+  "s": [
+   "Salina",
+   [
+    226,
+    222,
+    208
+   ]
+  ],
+  "a": [
+   "Arenisca",
+   [
+    206,
+    170,
+    104
+   ]
+  ],
+  "j": [
+   "Tarays y juncos",
+   [
+    92,
+    128,
+    78
+   ]
+  ],
+  "c": [
+   "Torrente",
+   [
+    172,
+    164,
+    136
+   ]
+  ]
+ }
+}

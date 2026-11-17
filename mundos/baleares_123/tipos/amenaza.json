@@ -1,0 +1,2 @@
+{"coleccion": "amenazas", "obligatorios": ["que", "dia"], "refs": {}, "id": "que",
+ "_": "Una amenaza con fecha: el briefing la cuenta atrás. dia: el día en que llega (el director lo mueve con cambiar). llego: true cuando ya se ha contado."}

@@ -1,0 +1,1 @@
+{"coleccion": "objetos", "obligatorios": ["nombre", "cantidad", "donde"], "refs": {"donde": "lugar"}, "id": "nombre", "catalogo": "objetos", "clave_catalogo": "nombre"}
